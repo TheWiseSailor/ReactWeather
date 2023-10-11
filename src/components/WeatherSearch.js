@@ -1,22 +1,28 @@
 import React, { useState } from "react";
 
-const WeatherSearch = () => {
+const WeatherSearch = ({ onSearch }) => {
   const [city, setCity] = useState("");
 
   const handleSearch = () => {
-    // Implement your search logic here
-    console.log(`Searching for city: ${city}`);
+    onSearch(city);
+    setCity("");
   };
 
   return (
-    <div className="weather-search">
+    <div className="flex items-center my-4">
       <input
         type="text"
         placeholder="Search for a city"
         value={city}
         onChange={(e) => setCity(e.target.value)}
+        className="w-60 p-2 border rounded mr-4"
       />
-      <button onClick={handleSearch}>Search</button>
+      <button
+        onClick={handleSearch}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Search
+      </button>
     </div>
   );
 };
