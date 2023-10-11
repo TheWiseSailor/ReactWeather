@@ -1,0 +1,209 @@
+import React, { useEffect, useState } from "react";
+
+// Define your component
+function WeatherDashboard() {
+  // State variables to hold data
+  const [searchedCities, setSearchedCities] = useState([]);
+  const [currentWeather, setCurrentWeather] = useState({});
+  const [forecast, setForecast] = useState([]);
+
+  // State variable for the search input
+  const [searchInput, setSearchInput] = useState("");
+
+  // API key
+  const apiKey = "1850c488fdbe3a1cd0ab670585eea465";
+
+  // Function to handle the search
+  const handleSearch = (event) => {
+    event.preventDefault();
+
+    const city = searchInput.trim();
+    if (city !== "") {
+      getWeather(city);
+      setSearchInput("");
+
+      // Add the city to the searched cities array
+      const updatedSearchedCities = [city, ...searchedCities.slice(0, 7)];
+      setSearchedCities(updatedSearchedCities);
+
+      // Save the updated searched cities array in local storage
+      localStorage.setItem(
+        "searchedCities",
+        JSON.stringify(updatedSearchedCities)
+      );
+    }
+  };
+
+  // Function to fetch weather data from the API
+  const getWeather = (city) => {
+    const currentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
+    const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=imperial`;
+
+    // Fetch current weather
+    fetch(currentWeatherURL)
+      .then((response) => response.json())
+      .then((data) => {
+        // Set current weather data
+        setCurrentWeather(data);
+
+        // Fetch forecast
+        fetch(forecastURL)
+          .then((response) => response.json())
+          .then((data) => {
+            // Set forecast data
+            const forecastData = data.list.filter((item) =>
+              item.dt_txt.includes("12:00:00")
+            );
+            setForecast(forecastData);
+          })
+          .catch((error) => console.log("Error fetching forecast:", error));
+      })
+      .catch((error) => console.log("Error fetching current weather:", error));
+  };
+
+  // Function to handle the UV index color
+  const getUVIndexColor = (uvIndex) => {
+    if (uvIndex < 3) return "bg-green-300";
+    if (uvIndex < 6) return "bg-yellow-300";
+    return "bg-red-300";
+  };
+
+  // Load weather for a default city on page load
+  useEffect(() => {
+    const defaultCity = "New York";
+    getWeather(defaultCity);
+
+    // Retrieve the searched cities from local storage
+    const storedSearchedCities =
+      JSON.parse(localStorage.getItem("searchedCities")) || [];
+    setSearchedCities(storedSearchedCities);
+  }, []);
+
+  return (
+    <div
+      className="bg-cover bg-center h-screen"
+      style={{
+        backgroundImage:
+          "url(https://images.unsplash.com/photo-1466927593098-4d4aa7a2b2d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80)",
+      }}
+    >
+      <h1 className="bg-gray-700 bg-opacity-60 p-4 text-center text-white">
+        Weather Dashboard
+      </h1>
+      <div className="flex">
+        <aside className="w-1/4 h-screen p-4">
+          <h3 className="mb-2">Search for a City:</h3>
+          <form onSubmit={handleSearch}>
+            <input
+              type="text"
+              id="searchBar"
+              className="w-48 h-8 border border-opacity-30 rounded mb-2"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+            <button
+              type="submit"
+              id="searchButton"
+              className="bg-transparent border border-opacity-30 rounded p-1.5 mb-2 hover:border-blue-400 focus:outline-none"
+            >
+              🔍
+            </button>
+          </form>
+          <div
+            id="searchedCities"
+            className="bg-white bg-opacity-60 border border-opacity-60 rounded p-4 mb-2"
+          >
+            {searchedCities.map((city, index) => (
+              <div
+                key={index}
+                className="searchedCity border-b border-opacity-60"
+              >
+                {city}
+              </div>
+            ))}
+          </div>
+        </aside>
+        <main className="w-3/4 h-screen">
+          {/* Current Weather */}
+          <div id="weatherToday" className="p-4 text-center rounded relative">
+            <h2>
+              <span id="currentCity">{currentWeather.name}</span>(
+              <span id="currentDate">
+                {new Date().toLocaleDateString("en-US")}
+              </span>
+              )
+              <img
+                src={`http://openweathermap.org/img/w/${currentWeather.weather[0].icon}.png`}
+                width="50"
+                height="50"
+                id="currentIcon"
+              />
+            </h2>
+            <p>
+              Temperature:{" "}
+              <span id="currentTemperature">
+                {currentWeather.main?.temp.toFixed(1)}°F
+              </span>
+            </p>
+            <p>
+              Humidity:{" "}
+              <span id="currentHumidity">{currentWeather.main?.humidity}%</span>
+            </p>
+            <p>
+              Wind Speed:{" "}
+              <span id="currentWind">
+                {currentWeather.wind?.speed.toFixed(1)} MPH
+              </span>
+            </p>
+            <p
+              id="currentUVIndex"
+              className={`rounded p-2 ${getUVIndexColor(
+                currentWeather.main?.uvIndex
+              )}`}
+            >
+              UV Index: {currentWeather.main?.uvIndex}
+            </p>
+          </div>
+
+          {/* 5-Day Forecast */}
+          <div id="weatherForecast" className="p-4">
+            <h4>5-Day Forecast</h4>
+            <div id="dateContainer" className="flex flex-wrap justify-center">
+              {forecast.map((item, index) => (
+                <div
+                  key={index}
+                  className="dateBox bg-blue-400 bg-opacity-60 w-48 h-52 border border-opacity-60 rounded p-4 text-white mb-4"
+                >
+                  <h4>{new Date(item.dt_txt).toLocaleDateString("en-US")}</h4>
+                  <p className="weatherEmoji">
+                    <img
+                      src={`http://openweathermap.org/img/w/${item.weather[0].icon}.png`}
+                      width="25"
+                      height="25"
+                      id={`day${index + 1}Icon`}
+                      alt="Weather Icon"
+                    />
+                  </p>
+                  <p>
+                    Temp:{" "}
+                    <span id={`day${index + 1}Temp`}>
+                      {item.main?.temp.toFixed(1)}°F
+                    </span>
+                  </p>
+                  <p>
+                    Humidity:{" "}
+                    <span id={`day${index + 1}Humidity`}>
+                      {item.main?.humidity}%
+                    </span>
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
+
+export default WeatherDashboard;
