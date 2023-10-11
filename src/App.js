@@ -1,16 +1,10 @@
 import React from "react";
-
-import WeatherSearch from "./components/WeatherSearch";
-import WeatherCurrent from "./components/WeatherCurrent";
-import WeatherForecast from "./components/WeatherForecast";
+import WeatherDashboard from "./components/WeatherDashboard";
 
 function App() {
   return (
     <div className="App">
-      <h1>Weather Dashboard</h1>
-      <WeatherSearch />
-      <WeatherCurrent />
-      <WeatherForecast />
+      <WeatherDashboard />
     </div>
   );
 }
