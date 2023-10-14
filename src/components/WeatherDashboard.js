@@ -109,7 +109,7 @@ const WeatherDashboard = () => {
 
   return (
     <div className="App">
-      <h1 className="text-3xl font-bold my-4">Weather Dashboard</h1>
+      <h1 className="text-3xl font-bold my-4 ">Weather Dashboard</h1>
       <WeatherSearch onSearch={handleSearch} />
       <SearchedCities cities={searchedCities} onCityClick={handleSearch} />
       {currentWeather && <CurrentWeather weather={currentWeather} />}
