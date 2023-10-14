@@ -2,14 +2,14 @@ import React from "react";
 
 const CurrentWeather = ({ weather }) => {
   return (
-    <div className="Weather-Current">
-      <h2>
-        {weather.city} (<span>{weather.date}</span>)
+    <div className="bg-blue-100 p-4 rounded shadow-md">
+      <h2 className="text-2xl font-semibold">
+        {weather.city} (<span className="text-gray-600">{weather.date}</span>)
       </h2>
-      <p>Temperature: {weather.temperature}°F</p>
-      <p>Humidity: {weather.humidity}%</p>
-      <p>Wind Speed: {weather.windSpeed} MPH</p>
-      <p>
+      <p className="text-lg">Temperature: {weather.temperature}°F</p>
+      <p className="text-lg">Humidity: {weather.humidity}%</p>
+      <p className="text-lg">Wind Speed: {weather.windSpeed} MPH</p>
+      <p className="text-lg">
         UV Index:{" "}
         <span
           className={`${
@@ -18,7 +18,7 @@ const CurrentWeather = ({ weather }) => {
               : weather.uvIndex < 6
               ? "bg-yellow-500"
               : "bg-red-500"
-          } py-1 px-2 rounded`}
+          } py-1 px-2 rounded text-white`}
         >
           {weather.uvIndex}
         </span>
