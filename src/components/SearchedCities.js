@@ -12,7 +12,7 @@ const SearchedCities = ({ cities, onCityClick }) => {
             <li key={index}>
               <button
                 onClick={() => onCityClick(city)}
-                className="text-blue-500 hover:underline cursor-pointer"
+                className="bg-gray-600 text-white hover:underline cursor-pointer rounded-xl pl-2 pr-2"
               >
                 {city}
               </button>

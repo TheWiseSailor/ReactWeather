@@ -1,15 +1,23 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import "../components/styles/App.css";
 const WeatherSearch = ({ onSearch }) => {
   const [city, setCity] = useState("");
+  const [searchButtonClicked, setSearchButtonClicked] = useState(false);
 
   const handleSearch = () => {
+    if (!searchButtonClicked) {
+      setSearchButtonClicked(true);
+    }
     onSearch(city);
     setCity("");
   };
 
   return (
-    <div className="flex flex-col items-center h-screen justify-center">
+    <div
+      className={`flex flex-col items-center ${
+        searchButtonClicked ? "pt-32" : "pt-96"
+      } justify-center`}
+    >
       <div className="mb-4 text-xl font-bold">Welcome to Weather DashBoard</div>
       <div className="flex justify-center items-center">
         <input
