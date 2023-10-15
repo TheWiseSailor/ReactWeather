@@ -26,7 +26,7 @@ const WeatherDashboard = () => {
     setShowSearchedCities(true);
   };
   const addCityToSearchedCities = (city) => {
-    setSearchedCities((prevCities) => [city, ...prevCities.slice(0, 3)]);
+    setSearchedCities((prevCities) => [city, ...prevCities.slice(0, 2)]);
     localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
   };
 

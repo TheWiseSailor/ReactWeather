@@ -6,13 +6,13 @@ const SearchedCities = ({ cities, onCityClick }) => {
   return (
     <aside>
       <div>
-        <h2 className="text-xl font-semibold">Searched Cities</h2>
+        <h2 className="text-xl font-semibold pt-8">Searched Cities</h2>
         <ul>
           {cities.map((city, index) => (
             <li key={index}>
               <button
                 onClick={() => onCityClick(city)}
-                className="bg-gray-600 text-white hover:underline cursor-pointer rounded-xl pl-2 pr-2"
+                className=" text-black font-bold hover:underline cursor-pointer rounded-xl pl-2 pr-2 mt-4"
               >
                 {city}
               </button>
