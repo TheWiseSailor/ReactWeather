@@ -37,7 +37,7 @@ const WeatherSearch = ({
           placeholder="Search for a city"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          className="w-60 p-2 border rounded mr-4"
+          className="w-60 p-2 border rounded mr-4 text-black"
         />
         <button
           onClick={handleSearch}
