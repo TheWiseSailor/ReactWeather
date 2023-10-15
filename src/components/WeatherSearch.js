@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import "../components/styles/App.css";
 const WeatherSearch = ({ onSearch }) => {
   const [city, setCity] = useState("");
 

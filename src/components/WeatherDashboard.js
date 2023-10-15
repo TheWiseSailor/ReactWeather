@@ -4,7 +4,7 @@ import WeatherSearch from "./WeatherSearch";
 import SearchedCities from "./SearchedCities";
 import CurrentWeather from "./CurrentWeather";
 import WeatherForecast from "./WeatherForecast";
-
+import "../components/styles/App.css";
 const WeatherDashboard = () => {
   const [searchedCities, setSearchedCities] = useState([]);
   const [currentWeather, setCurrentWeather] = useState(null);
