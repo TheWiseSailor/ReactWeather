@@ -15,3 +15,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+/* App.css */
+.light {
+  background-color: #fff; /* Light mode background color */
+  color: #000; /* Light mode text color */
+  /* Add more light mode styles as needed */
+}
+
+.dark {
+  background-color: #333; /* Dark mode background color */
+  color: #fff; /* Dark mode text color */
+  /* Add more dark mode styles as needed */
+}
+
+/* Add styles for the light/dark mode button */
+.light-dark-button {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  /* Add more button styles as needed */
+}

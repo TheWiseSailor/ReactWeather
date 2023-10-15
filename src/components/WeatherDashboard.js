@@ -1,16 +1,17 @@
-// Import WeatherSearch at the top of the file
 import React, { useState, useEffect } from "react";
 import WeatherSearch from "./WeatherSearch";
 import SearchedCities from "./SearchedCities";
 import CurrentWeather from "./CurrentWeather";
 import WeatherForecast from "./WeatherForecast";
 import "../components/styles/App.css";
+
 const WeatherDashboard = () => {
   const [searchedCities, setSearchedCities] = useState([]);
   const [currentWeather, setCurrentWeather] = useState(null);
   const [forecastData, setForecastData] = useState([]);
   const [showSearchedCities, setShowSearchedCities] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false); // State for dark mode
 
   const apiKey = process.env.REACT_APP_API_KEY; // Define the apiKey
 
@@ -19,42 +20,43 @@ const WeatherDashboard = () => {
       JSON.parse(localStorage.getItem("searchedCities")) || [];
     setSearchedCities(storedCities);
   }, []);
+
   const handleSearch = (city) => {
-    setIsSearching(true); // Apply centered styles
+    setIsSearching(true);
     getWeather(city);
     addCityToSearchedCities(city);
     setShowSearchedCities(true);
   };
+
   const addCityToSearchedCities = (city) => {
     setSearchedCities((prevCities) => [city, ...prevCities.slice(0, 2)]);
     localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
   };
 
   const getWeather = (city) => {
-    const apiKey = process.env.REACT_APP_API_KEY; // Access the API key from .env
+    const apiKey = process.env.REACT_APP_API_KEY;
     const currentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
     const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=imperial`;
 
     fetch(currentWeatherURL)
       .then((response) => response.json())
       .then((data) => {
-        // Display current weather
         displayCurrentWeather(data);
 
         fetch(forecastURL)
           .then((response) => response.json())
           .then((data) => {
-            // Display forecast
             displayForecast(data);
           })
           .catch((error) => console.log("Error fetching forecast:", error));
       })
       .catch((error) => console.log("Error fetching current weather:", error));
   };
-  //this is a function to revert isSearching to false when the search is complete
+
   const handleSearchComplete = () => {
-    setIsSearching(false); // Revert to original position
+    setIsSearching(false);
   };
+
   const displayCurrentWeather = (data) => {
     const cityName = data.name;
     const date = new Date().toLocaleDateString("en-US");
@@ -112,12 +114,25 @@ const WeatherDashboard = () => {
 
     setForecastData(forecastValues);
   };
+
+  // Function to toggle between light and dark mode
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  const getModeClasses = () => {
+    return isDarkMode ? "dark" : "light";
+  };
+
   return (
     <div
       className={`App flex flex-col items-center justify-center ${
         isSearching ? "centered-search" : ""
-      }`}
+      } ${getModeClasses()}`}
     >
+      <button className="light-dark-button" onClick={toggleDarkMode}>
+        {isDarkMode ? "Light Mode" : "Dark Mode"}
+      </button>
       <div className="mobile-view w-full flex flex-col items-center justify-center">
         <WeatherSearch
           onSearch={handleSearch}
@@ -128,7 +143,7 @@ const WeatherDashboard = () => {
         )}
       </div>
 
-      <div className="w-3/4 mt-8">
+      <div className="w-3/4 mt-8 pb-10">
         {currentWeather && <CurrentWeather weather={currentWeather} />}
         {forecastData.length > 0 && (
           <WeatherForecast forecastData={forecastData} />
@@ -137,4 +152,5 @@ const WeatherDashboard = () => {
     </div>
   );
 };
+
 export default WeatherDashboard;
