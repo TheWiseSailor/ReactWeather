@@ -9,6 +9,9 @@ const WeatherDashboard = () => {
   const [searchedCities, setSearchedCities] = useState([]);
   const [currentWeather, setCurrentWeather] = useState(null);
   const [forecastData, setForecastData] = useState([]);
+  const [showSearchedCities, setShowSearchedCities] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+
   const apiKey = process.env.REACT_APP_API_KEY; // Define the apiKey
 
   useEffect(() => {
@@ -16,12 +19,12 @@ const WeatherDashboard = () => {
       JSON.parse(localStorage.getItem("searchedCities")) || [];
     setSearchedCities(storedCities);
   }, []);
-
   const handleSearch = (city) => {
+    setIsSearching(true); // Apply centered styles
     getWeather(city);
     addCityToSearchedCities(city);
+    setShowSearchedCities(true);
   };
-
   const addCityToSearchedCities = (city) => {
     setSearchedCities((prevCities) => [city, ...prevCities.slice(0, 7)]);
     localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
@@ -48,7 +51,10 @@ const WeatherDashboard = () => {
       })
       .catch((error) => console.log("Error fetching current weather:", error));
   };
-
+  //this is a function to revert isSearching to false when the search is complete
+  const handleSearchComplete = () => {
+    setIsSearching(false); // Revert to original position
+  };
   const displayCurrentWeather = (data) => {
     const cityName = data.name;
     const date = new Date().toLocaleDateString("en-US");
@@ -106,18 +112,29 @@ const WeatherDashboard = () => {
 
     setForecastData(forecastValues);
   };
-
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold my-4 ">Weather Dashboard</h1>
-      <WeatherSearch onSearch={handleSearch} />
-      <SearchedCities cities={searchedCities} onCityClick={handleSearch} />
-      {currentWeather && <CurrentWeather weather={currentWeather} />}
-      {forecastData.length > 0 && (
-        <WeatherForecast forecastData={forecastData} />
-      )}
+    <div
+      className={`App flex flex-col items-center justify-center ${
+        isSearching ? "centered-search" : ""
+      }`}
+    >
+      <div className="mobile-view w-full flex flex-col items-center justify-center">
+        <WeatherSearch
+          onSearch={handleSearch}
+          onSearchComplete={handleSearchComplete}
+        />
+        {showSearchedCities && (
+          <SearchedCities cities={searchedCities} onCityClick={handleSearch} />
+        )}
+      </div>
+
+      <div className="w-3/4 mt-8">
+        {currentWeather && <CurrentWeather weather={currentWeather} />}
+        {forecastData.length > 0 && (
+          <WeatherForecast forecastData={forecastData} />
+        )}
+      </div>
     </div>
   );
 };
-
 export default WeatherDashboard;
