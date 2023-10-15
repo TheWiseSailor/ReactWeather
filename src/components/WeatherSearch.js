@@ -22,13 +22,13 @@ const WeatherSearch = ({
     if (searchButtonClicked) {
       return "App flex flex-col items-center justify-center";
     } else {
-      return "App flex flex-col items-center justify-center pt-96 pb-80 mb-9";
+      return "App flex flex-col items-center justify-center pt-96 pb-80 ";
     }
   };
 
   return (
     <div className={getClassName()}>
-      <div className="mb-4 text-xl font-bold pt-32 ">
+      <div className="mb-4 text-xl font-bold pt-4 ">
         Welcome to Weather DashBoard
       </div>
       <div className="flex justify-center items-center">
