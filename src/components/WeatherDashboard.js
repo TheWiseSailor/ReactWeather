@@ -132,11 +132,15 @@ const WeatherDashboard = () => {
     >
       <button
         className="light-dark-button rounded-xl pl-2 pr-2 mt-12 "
+        data-aos="fade-down"
         onClick={toggleDarkMode}
       >
         {isDarkMode ? "Light Mode" : "Dark Mode"}
       </button>
-      <div className="mobile-view w-full flex flex-col items-center justify-center">
+      <div
+        className="mobile-view w-full flex flex-col items-center justify-center "
+        data-aos="fade-down"
+      >
         <WeatherSearch
           onSearch={handleSearch}
           onSearchComplete={handleSearchComplete}
@@ -146,7 +150,7 @@ const WeatherDashboard = () => {
         )}
       </div>
 
-      <div className="w-3/4 mt-8 pb-16 mb-9">
+      <div className="w-3/4 mt-8 pb-16 mb-9 ">
         {currentWeather && <CurrentWeather weather={currentWeather} />}
         {forecastData.length > 0 && (
           <WeatherForecast forecastData={forecastData} />

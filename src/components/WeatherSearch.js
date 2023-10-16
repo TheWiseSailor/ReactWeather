@@ -1,6 +1,18 @@
 import React, { useState } from "react";
 import "../components/styles/App.css";
+const link = document.createElement("link");
+link.rel = "stylesheet";
+link.href = "https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css";
+document.head.appendChild(link);
 
+const script = document.createElement("script");
+script.src = "https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js";
+document.body.appendChild(script);
+
+// Initialize AOS after the script has loaded
+script.onload = () => {
+  window.AOS.init();
+};
 const WeatherSearch = ({
   onSearch,
   isSearching,
@@ -28,10 +40,10 @@ const WeatherSearch = ({
 
   return (
     <div className={getClassName()}>
-      <div className="mb-4 text-xl font-bold pt-4 ">
+      <div className="mb-4 text-xl font-bold pt-4 " data-aos="fade-right">
         Welcome to Weather DashBoard
       </div>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center " data-aos="fade-left">
         <input
           type="text"
           placeholder="Search for a city"
