@@ -53,7 +53,7 @@ const WeatherSearch = ({
         />
         <button
           onClick={handleSearch}
-          className="bg-blue-500 hover-bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-700 transform transition-transform hover:translate-x-1 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
         >
           Search
         </button>
