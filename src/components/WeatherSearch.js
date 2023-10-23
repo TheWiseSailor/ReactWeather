@@ -34,7 +34,7 @@ const WeatherSearch = ({
     if (searchButtonClicked) {
       return "App flex flex-col items-center justify-center";
     } else {
-      return "App flex flex-col items-center justify-center pt-96 pb-80 ";
+      return "App flex flex-col items-center justify-center pt-96 pb-80 mb-5 ";
     }
   };
 
