@@ -6,6 +6,7 @@ import WeatherForecast from "./WeatherForecast";
 import "../components/styles/App.css";
 
 const WeatherDashboard = () => {
+  // State management using React hooks
   const [searchedCities, setSearchedCities] = useState([]);
   const [currentWeather, setCurrentWeather] = useState(null);
   const [forecastData, setForecastData] = useState([]);
@@ -13,14 +14,17 @@ const WeatherDashboard = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false); // State for dark mode
 
-  const apiKey = process.env.REACT_APP_API_KEY; // Define the apiKey
+  // Retrieve the API key from environment variables
+  const apiKey = process.env.REACT_APP_API_KEY;
 
+  // Load searched cities from local storage when the component is mounted
   useEffect(() => {
     const storedCities =
       JSON.parse(localStorage.getItem("searchedCities")) || [];
     setSearchedCities(storedCities);
   }, []);
 
+  // Function to handle the search for weather data
   const handleSearch = (city) => {
     setIsSearching(true);
     getWeather(city);
@@ -28,11 +32,13 @@ const WeatherDashboard = () => {
     setShowSearchedCities(true);
   };
 
+  // Function to add a city to the list of searched cities
   const addCityToSearchedCities = (city) => {
     setSearchedCities((prevCities) => [city, ...prevCities.slice(0, 2)]);
     localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
   };
 
+  // Function to fetch weather data from the OpenWeatherMap API
   const getWeather = (city) => {
     const apiKey = process.env.REACT_APP_API_KEY;
     const currentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
@@ -53,10 +59,12 @@ const WeatherDashboard = () => {
       .catch((error) => console.log("Error fetching current weather:", error));
   };
 
+  // Function to handle the completion of a search
   const handleSearchComplete = () => {
     setIsSearching(false);
   };
 
+  // Function to display the current weather information
   const displayCurrentWeather = (data) => {
     const cityName = data.name;
     const date = new Date().toLocaleDateString("en-US");
@@ -87,6 +95,7 @@ const WeatherDashboard = () => {
       .catch((error) => console.log("Error fetching UV index:", error));
   };
 
+  // Function to display the weather forecast information
   const displayForecast = (data) => {
     const forecastList = data.list;
     const forecastData = [];
@@ -120,6 +129,7 @@ const WeatherDashboard = () => {
     setIsDarkMode(!isDarkMode);
   };
 
+  // Function to return appropriate CSS classes for light or dark mode
   const getModeClasses = () => {
     return isDarkMode ? "dark" : "light";
   };
@@ -130,6 +140,7 @@ const WeatherDashboard = () => {
         isSearching ? "centered-search" : ""
       } ${getModeClasses()}`}
     >
+      {/* Button to toggle between light and dark mode */}
       <button
         className="light-dark-button rounded-xl pl-2 pr-2 mt-12 "
         data-aos="fade-down"
@@ -141,17 +152,21 @@ const WeatherDashboard = () => {
         className="mobile-view w-full flex flex-col items-center justify-center "
         data-aos="fade-down"
       >
+        {/* Weather search component */}
         <WeatherSearch
           onSearch={handleSearch}
           onSearchComplete={handleSearchComplete}
         />
+        {/* Searched cities list */}
         {showSearchedCities && (
           <SearchedCities cities={searchedCities} onCityClick={handleSearch} />
         )}
       </div>
 
       <div className="w-3/4 mt-8 pb-16 mb-9 ">
+        {/* Display current weather if available */}
         {currentWeather && <CurrentWeather weather={currentWeather} />}
+        {/* Display weather forecast if available */}
         {forecastData.length > 0 && (
           <WeatherForecast forecastData={forecastData} />
         )}
