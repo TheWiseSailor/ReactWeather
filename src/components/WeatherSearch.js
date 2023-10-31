@@ -51,7 +51,7 @@ const WeatherSearch = ({
         Welcome to Weather DashBoard
       </div>
       <div
-        className="flex justify-center items-center pb-32"
+        className="flex justify-center items-center pb-64"
         data-aos="fade-left"
       >
         {/* Input field for city search */}
