@@ -50,7 +50,10 @@ const WeatherSearch = ({
       <div className="mb-4 text-xl font-bold pt-4 " data-aos="fade-right">
         Welcome to Weather DashBoard
       </div>
-      <div className="flex justify-center items-center " data-aos="fade-left">
+      <div
+        className="flex justify-center items-center pb-32"
+        data-aos="fade-left"
+      >
         {/* Input field for city search */}
         <input
           type="text"
@@ -63,7 +66,7 @@ const WeatherSearch = ({
         {/* Button for initiating the search */}
         <button
           onClick={handleSearch}
-          className="bg-blue-500 hover:bg-blue-700 transform transition-transform hover:translate-x-1 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500  hover:bg-blue-700 transform transition-transform hover:translate-x-1 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
         >
           Search
         </button>
